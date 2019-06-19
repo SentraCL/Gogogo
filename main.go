@@ -13,7 +13,7 @@ import (
 func main() {
 	var port string
 	var enemies int
-	flag.StringVar(&port, "p", ":8080", "Puerto en el cual correra la aplicacion")
+	flag.StringVar(&port, "p", "8080", "Puerto en el cual correra la aplicacion")
 	flag.IntVar(&enemies, "e", 1, "Cantidad de Enemigos")
 	flag.Parse()
 

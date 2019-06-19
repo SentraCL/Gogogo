@@ -19,20 +19,21 @@ func (gm GameManager) SeePlayer(i, min, max int) bool {
 
 //Start , Iniciar Juego!!!
 func (gm GameManager) Start(enemiesMax int) {
-	log.Println("Que empiece el Juego!")
+	log.Println("Que empiece el Juego ")
 	go gm.Enemies(enemiesMax)
 }
 
 //Enemies , Mente Enemiga!!
 func (gm GameManager) Enemies(enemiesMax int) {
-	log.Println("Enemigos Listos!!")
+	log.Println("Enemigos Listos!!", enemiesMax)
 	worlController := controllers.WorldController{}
 	enemies := worlController.GetEnemies()
 
 	//sEnemy := helpers.StringifyJSON(enemies)
-	if len(*enemies) == 0 {
+	if len(*enemies) == 0 || len(*enemies) < enemiesMax {
 		worlController := controllers.WorldController{}
 		for e := 0; e < enemiesMax; e++ {
+			log.Println("Crear Enemigo!")
 			worlController.CreateEnemy()
 		}
 	}
