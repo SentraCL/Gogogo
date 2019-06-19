@@ -30,7 +30,6 @@ func (sm SessionModel) IsUserValid(user, pass string) bool {
 	if err == nil {
 		isValid = (user == _user && pass == _pass)
 	} else {
-		//TODO :Mostrar Error por consola
 		isValid = false
 	}
 	log.Println("Es un Usuario Valido : ", isValid)

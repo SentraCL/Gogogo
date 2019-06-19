@@ -79,9 +79,9 @@ func (sc WorldController) GetFreePosition(player string) *structs.Object {
 
 		isFreePosition = worldModel.GetWhoAreIn(x, y, &player)
 		if !isFreePosition {
-			log.Printf("Quien esta en la posicion : %s \n" + player)
+			//log.Printf("Quien esta en la posicion : %s \n" + player)
 		} else {
-			log.Printf("Posicion Libre para %s \n", player)
+			//log.Printf("Posicion Libre para %s \n", player)
 			worldModel.PutInTheWorld(x, y, player)
 		}
 	}

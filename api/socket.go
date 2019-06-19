@@ -24,12 +24,12 @@ func (sg SocketGame) GetServer() *socketio.Server {
 	}
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
-		log.Println("connected:", s.ID())
+		//log.Println("connected:", s.ID())
 		return nil
 	})
 
 	server.OnEvent("/", "move", func(s socketio.Conn, playerJsonString string) string {
-		log.Println("connected:", s.ID())
+		//log.Println("connected:", s.ID())
 		player := structs.PlayerOnline{}
 		json.Unmarshal([]byte(playerJsonString), &player)
 		playerCtrl := controllers.PlayerController{}
@@ -49,8 +49,8 @@ func (sg SocketGame) GetServer() *socketio.Server {
 
 		s.SetContext("")
 		if localWorld != worldString {
-			log.Println("connected:", s.ID())
-			log.Println("UpdateWorld:", localWorld)
+			//log.Println("connected:", s.ID())
+			//log.Println("UpdateWorld:", localWorld)
 			s.Emit("renderWorld", worldString)
 		}
 

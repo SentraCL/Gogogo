@@ -49,7 +49,7 @@ func (wml WorldModel) GetWhoAreIn(x, y int, whois *string) bool {
 	isValid = !whoInWorld.Full
 	whois = &whoInWorld.Who
 	if isValid {
-		log.Println("Hay espacio libre!!")
+		//log.Println("Hay espacio libre!!")
 	}
 	return isValid
 }

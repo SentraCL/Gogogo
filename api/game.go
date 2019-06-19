@@ -19,7 +19,7 @@ func (gm GameManager) SeePlayer(i, min, max int) bool {
 
 //Start , Iniciar Juego!!!
 func (gm GameManager) Start(enemiesMax int) {
-	log.Println("Que comienze el Juego!")
+	log.Println("Que empiece el Juego!")
 	go gm.Enemies(enemiesMax)
 }
 
@@ -90,33 +90,35 @@ func (gm GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object
 	if victim != "" {
 		collision := false
 		//Que no choque con otro Enemigo
+
+		worlController := controllers.WorldController{}
+		if enemy.X > goToX {
+			enemy.X--
+		} else if enemy.X < goToX {
+			enemy.X++
+		}
+
+		if enemy.Y > goToY {
+			enemy.Y--
+		} else if enemy.Y < goToY {
+			enemy.Y++
+		}
+
 		for _, other := range others {
 			if enemy.X == other.X && enemy.Y == other.Y {
 				collision = true
 			}
 		}
+
+		if enemy.X == goToX && enemy.Y == goToY {
+			worlController.Quit(victim)
+			enemy.Who = victim
+		}
 		//Si no colisiono, que busque al jugador
 		if !collision {
-			worlController := controllers.WorldController{}
-			if enemy.X > goToX {
-				enemy.X--
-			} else if enemy.X < goToX {
-				enemy.X++
-			}
-
-			if enemy.Y > goToY {
-				enemy.Y--
-			} else if enemy.Y < goToY {
-				enemy.Y++
-			}
-			if enemy.X == goToX && enemy.Y == goToY {
-				worlController.Quit(victim)
-				enemy.Who = victim
-			}
 			worlController.MoveObject(enemy)
 		}
 
 	}
 
-	//Si existe seguirlo
 }
