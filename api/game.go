@@ -89,6 +89,7 @@ func (gm GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object
 		}
 	}
 	if victim != "" {
+		log.Println(enemy.Who + " se quiere comer a " + victim)
 		collision := false
 		//Que no choque con otro Enemigo
 

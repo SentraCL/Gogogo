@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"math/rand"
+	"strconv"
 
 	structs "../models/structs"
 )
@@ -15,8 +16,11 @@ type WorldController struct {
 //CreateEnemy : Crea un Enemigo
 func (sc WorldController) CreateEnemy() *structs.Object {
 	enemy := structs.Object{}
-	enemy.Who = "Bot #" + string(rand.Intn(1000))
+
+	nBot := strconv.Itoa(rand.Intn(1000))
+	enemy.Who = "Bot #" + nBot
 	enemy.Type = structs.EnemyType
+	//TODO : Obtener valores minimos y maximos desde la base de datos segun el mundo.
 	min := 1
 	max := 15
 	x := 0
