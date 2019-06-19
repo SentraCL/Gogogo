@@ -1,0 +1,28 @@
+<html>
+<script src="/assets/js/socket.io.js"></script>
+<script src="/assets/js/jquery.js"></script>
+<script type="text/javascript" src="/assets/js/gogogo.js"></script>
+<link rel="stylesheet" type="text/css" href="/assets/css/gogogo.css">
+
+<body onload="createWorld()">
+    <input type="hidden" name="player" id="player" value="${playerName}" />
+
+    <span>
+        <div id="InfoPlayer">
+            <form style="float:right" method="POST" action="/logout">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </span>
+    <center>
+        <div class="tg-wrap">
+            <table class="world tg" id="world">
+            </table>
+        </div>
+    </center>
+
+    <!-- .... -->
+
+</body>
+
+</html>
