@@ -8,6 +8,7 @@ import (
 	controllers "../../controllers"
 	helpers "../../helpers"
 	"github.com/gorilla/securecookie"
+	"github.com/gorilla/sessions"
 )
 
 var cookieHandler = securecookie.New(
@@ -15,6 +16,12 @@ var cookieHandler = securecookie.New(
 	securecookie.GenerateRandomKey(32))
 
 var sesionCtrl = controllers.SessionController{}
+
+var (
+	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
+	key   = []byte("super-secret-key")
+	store = sessions.NewCookieStore(key)
+)
 
 // Handlers
 
@@ -37,6 +44,9 @@ func LoginHandler(response http.ResponseWriter, request *http.Request) {
 		isLogin := sesionCtrl.DoLogin(name, pass, cookieHash)
 
 		if isLogin {
+			session, _ := store.Get(request, "cookie-name")
+			session.Values["authenticated"] = true
+			session.Save(request, response)
 			redirectTarget = "/index"
 		} else {
 			redirectTarget = "/?Error"
@@ -82,6 +92,9 @@ func LogoutHandler(response http.ResponseWriter, request *http.Request) {
 	cookieHash := request.Header.Get("Cookie")
 	sesionCtrl.Exit(userName, cookieHash)
 	ClearCookie(response)
+	session, _ := store.Get(request, "cookie-name")
+	session.Values["authenticated"] = false
+	session.Save(request, response)
 	worlController := controllers.WorldController{}
 	defer worlController.Quit(userName)
 	http.Redirect(response, request, "/", 302)

@@ -19,6 +19,7 @@ func (gm GameManager) SeePlayer(i, min, max int) bool {
 
 //Start , Iniciar Juego!!!
 func (gm GameManager) Start(enemiesMax int) {
+
 	log.Println("Que empiece el Juego ")
 	go gm.Enemies(enemiesMax)
 }
@@ -52,7 +53,7 @@ func (gm GameManager) Enemies(enemiesMax int) {
 				}
 			}
 
-			gm.EnemyGetIA(&enemy, players, othersEnemies)
+			go gm.EnemyGetIA(&enemy, players, othersEnemies)
 			time.Sleep(1 * time.Second)
 		}
 
