@@ -18,15 +18,6 @@ type PlayerOnline struct {
 	Sprite string `json:"sprite"`
 }
 
-//Object : Objetos o actores en el juego
-type Object struct {
-	X, Y   int
-	Full   bool
-	Who    string
-	Sprite string
-	Type   int
-}
-
 //World :Definicion de posiciones en el juego
 type World struct {
 	Name    string
@@ -52,4 +43,13 @@ type Player struct {
 	TopScore   int
 	Position   *Object
 	Update     time.Time
+}
+
+//Object : Objetos o actores en el juego
+type Object struct {
+	X, Y   int
+	Full   bool
+	Who    string
+	Sprite string
+	Type   int
 }

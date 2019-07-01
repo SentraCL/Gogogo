@@ -10,28 +10,29 @@ import (
 
 //GameManager , La mente detras del juego
 type GameManager struct {
+	enemies *[]structs.Object
 }
 
 //SeePlayer , Rango de Vista del Enemigo
-func (gm GameManager) SeePlayer(i, min, max int) bool {
+func (gm *GameManager) SeePlayer(i, min, max int) bool {
 	return (i > min-1) && (i < max+1)
 }
 
 //Start , Iniciar Juego!!!
-func (gm GameManager) Start(enemiesMax int) {
+func (gm *GameManager) Start(enemiesMax int) {
 
 	log.Println("Que empiece el Juego ")
 	go gm.Enemies(enemiesMax)
 }
 
 //Enemies , Mente Enemiga!!
-func (gm GameManager) Enemies(enemiesMax int) {
+func (gm *GameManager) Enemies(enemiesMax int) {
 	log.Println("Enemigos Listos!!", enemiesMax)
 	worlController := controllers.WorldController{}
-	enemies := worlController.GetEnemies()
+	gm.enemies = worlController.GetEnemies()
 
 	//sEnemy := helpers.StringifyJSON(enemies)
-	if len(*enemies) == 0 || len(*enemies) < enemiesMax {
+	if len(*gm.enemies) == 0 || len(*gm.enemies) < enemiesMax {
 		worlController := controllers.WorldController{}
 		for e := 0; e < enemiesMax; e++ {
 			log.Println("Crear Enemigo!")
@@ -40,25 +41,18 @@ func (gm GameManager) Enemies(enemiesMax int) {
 	}
 
 	for true {
-		enemies = worlController.GetEnemies()
+		gm.enemies = worlController.GetEnemies()
 		//Obtener listado de Enemigos
 		players := *worlController.GetPlayers()
 		//Itera Enemigos y les da Algo Parecido a la Inteligencia ( :3 instinto mas que nada )
 
-		for _, enemy := range *enemies {
-			othersEnemies := []structs.Object{}
-			for _, otherEnemy := range *enemies {
-				if otherEnemy.Who != enemy.Who {
-					othersEnemies = append(othersEnemies, otherEnemy)
-				}
-			}
-
-			go gm.EnemyGetIA(&enemy, players, othersEnemies)
+		for _, enemy := range *gm.enemies {
+			go gm.EnemyGetIA(&enemy, players)
 			time.Sleep(1 * time.Second)
 		}
 
 		//En el caso que eliminen a los Enemigos!
-		if len(*enemies) == 0 {
+		if len(*gm.enemies) == 0 {
 			worlController := controllers.WorldController{}
 			worlController.CreateEnemy()
 		}
@@ -66,10 +60,11 @@ func (gm GameManager) Enemies(enemiesMax int) {
 }
 
 //EnemyGetIA : Instinto Artificial para Enemigo
-func (gm GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object, others []structs.Object) {
+func (gm *GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object) {
 	goToX := 0
 	goToY := 0
 	victim := ""
+
 	//Existe un Jugador dentro del Rango de Vista del Enemigo
 	for _, player := range players {
 		if player.Type == structs.PlayerType {
@@ -91,8 +86,6 @@ func (gm GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object
 	}
 	if victim != "" {
 		log.Println(enemy.Who + " se quiere comer a " + victim)
-		collision := false
-		//Que no choque con otro Enemigo
 
 		worlController := controllers.WorldController{}
 		if enemy.X > goToX {
@@ -107,9 +100,14 @@ func (gm GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object
 			enemy.Y++
 		}
 
-		for _, other := range others {
-			if enemy.X == other.X && enemy.Y == other.Y {
-				collision = true
+		//Que no choque con otro Enemigo
+		collision := false
+
+		for _, other := range *gm.enemies {
+			if other.Who != enemy.Who {
+				if enemy.X == other.X && enemy.Y == other.Y {
+					collision = true
+				}
 			}
 		}
 
@@ -121,7 +119,5 @@ func (gm GameManager) EnemyGetIA(enemy *structs.Object, players []structs.Object
 		if !collision {
 			worlController.MoveObject(enemy)
 		}
-
 	}
-
 }

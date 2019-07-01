@@ -44,7 +44,7 @@ function PlayerMove(keyCodeNumber) {
   });
 }
 
-function renderPlayer(object) {
+function renderObject(object) {
   var sprite = moveTo == "" ? "Right" : moveTo;
   var htmlPlayer = "<center>";
   //Coordenadas Player
@@ -84,7 +84,7 @@ socket.on("renderWorld", function(remoteWorld) {
     $(".tg-0lax").html("");
     for (var p in mundo.Objects) {
       var player = mundo.Objects[p];
-      renderPlayer(player);
+      renderObject(player);
     }
   }
 });

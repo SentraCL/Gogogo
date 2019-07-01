@@ -3,16 +3,17 @@ package models
 import (
 	"log"
 
+	helpers "../helpers"
 	structs "../models/structs"
 	"gopkg.in/mgo.v2/bson"
 )
 
-// WorldModel etc etc
+// WorldModel estructura que representa al mundo del juego
 type WorldModel struct {
 }
 
 // Get Obten el Mundo
-func (wml WorldModel) Get() *structs.World {
+func (wml *WorldModel) Get() *structs.World {
 
 	//Obtener Conexion.
 	session, err := GetSession()
@@ -21,17 +22,14 @@ func (wml WorldModel) Get() *structs.World {
 		panic(err)
 	}
 	whoInWorld := structs.World{}
-
 	worldDAO := session.DB(DataBaseName).C("World")
 	err = worldDAO.Find(bson.M{"name": "Mundo1"}).One(&whoInWorld)
-
-	//log.Printf("who %s \n\r", helpers.StringifyJSON(&whoInWorld))
 
 	return &whoInWorld
 }
 
 // GetWhoAreIn , etc etc
-func (wml WorldModel) GetWhoAreIn(x, y int, whois *string) bool {
+func (wml *WorldModel) GetWhoAreIn(x, y int, whois *string) bool {
 	//Obtengo DAO de MongoDB
 	isValid := true
 	//Obtener Conexion.
@@ -44,18 +42,18 @@ func (wml WorldModel) GetWhoAreIn(x, y int, whois *string) bool {
 	worldDAO := session.DB(DataBaseName).C("World")
 	err = worldDAO.Find(bson.M{"name": "Mundo1"}).Select(bson.M{"x": x, "y": y}).One(&whoInWorld)
 
-	//log.Printf("who %s \n\r", helpers.StringifyJSON(&whoInWorld))
+	log.Printf("who %s \n\r", helpers.StringifyJSON(&whoInWorld))
 
 	isValid = !whoInWorld.Full
 	whois = &whoInWorld.Who
 	if isValid {
-		//log.Println("Hay espacio libre!!")
+		log.Println("Hay espacio libre!!")
 	}
 	return isValid
 }
 
 //PutInTheWorld ,
-func (wml WorldModel) PutInTheWorld(x, y int, playerName string) bool {
+func (wml *WorldModel) PutInTheWorld(x, y int, playerName string) bool {
 	isValid := true
 	//Obtener Conexion.
 	session, err := GetSession()
@@ -87,7 +85,7 @@ func (wml WorldModel) PutInTheWorld(x, y int, playerName string) bool {
 }
 
 //MoveInTheWorld , mueve un objecto en el mundo
-func (wml WorldModel) MoveInTheWorld(object *structs.Object) bool {
+func (wml *WorldModel) MoveInTheWorld(object *structs.Object) bool {
 	isValid := true
 
 	isOut := wml.RemoveInTheWorld(object.Who)
@@ -116,7 +114,7 @@ func (wml WorldModel) MoveInTheWorld(object *structs.Object) bool {
 }
 
 //RemoveInTheWorld ,
-func (wml WorldModel) RemoveInTheWorld(who string) bool {
+func (wml *WorldModel) RemoveInTheWorld(who string) bool {
 	//Obtengo DAO de MongoDB
 	isValid := true
 	//Obtener Conexion.
@@ -148,7 +146,7 @@ func (wml WorldModel) RemoveInTheWorld(who string) bool {
 }
 
 //GetPlayer ,
-func (wml WorldModel) GetPlayer(playerName string) *structs.Object { //Obtengo DAO de MongoDB
+func (wml *WorldModel) GetPlayer(playerName string) *structs.Object {
 	playerPos := structs.Object{}
 	//Obtener Conexion.
 	session, err := GetSession()
@@ -178,7 +176,7 @@ func (wml WorldModel) GetPlayer(playerName string) *structs.Object { //Obtengo D
 }
 
 //GetObjectByType , obtiene segun tipo
-func (wml WorldModel) GetObjectByType(typeObject int) *[]structs.Object { //Obtengo DAO de MongoDB
+func (wml *WorldModel) GetObjectsByType(typeObject int) *[]structs.Object { //Obtengo DAO de MongoDB
 	//Obtener Conexion.
 	session, err := GetSession()
 	defer session.Close()
@@ -205,7 +203,7 @@ func (wml WorldModel) GetObjectByType(typeObject int) *[]structs.Object { //Obte
 }
 
 //CreateObject , obtiene segun tipo
-func (wml WorldModel) CreateObject(object structs.Object) *structs.Object { //Obtengo DAO de MongoDB
+func (wml *WorldModel) CreateObject(object structs.Object) *structs.Object { //Obtengo DAO de MongoDB
 	//Obtener Conexion.
 	session, err := GetSession()
 	defer session.Close()

@@ -12,7 +12,7 @@ type Route struct {
 // Routers , retorna los routes asociados a la rutina de login
 func (r Route) Routers() *mux.Router {
 	route := mux.NewRouter()
-	route.HandleFunc("/", handlers.LoginPageHandler)      // GET
+	route.HandleFunc("/", handlers.LoginPageHandler)     // GET
 	route.HandleFunc("/index", handlers.GamePageHandler) // GET
 	route.HandleFunc("/login", handlers.LoginHandler).Methods("POST")
 	route.HandleFunc("/register", handlers.RegisterPageHandler).Methods("GET")

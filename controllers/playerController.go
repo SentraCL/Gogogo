@@ -6,13 +6,15 @@ import (
 
 //PlayerController COntrolador de los jugadores
 type PlayerController struct {
+	maxX int
+	maxY int
 }
 
 //MovePlayer mueve el player
-func (pc PlayerController) MovePlayer(playerMove *strutcs.PlayerOnline) {
+func (pc *PlayerController) MovePlayer(playerMove *strutcs.PlayerOnline) {
 
-	maxX := 10
-	maxY := 20
+	pc.maxX = 10
+	pc.maxY = 20
 
 	playerPos := worldController.GetPlayerPosition(playerMove.Name)
 
@@ -31,18 +33,18 @@ func (pc PlayerController) MovePlayer(playerMove *strutcs.PlayerOnline) {
 		playerPos.Y++
 	}
 
-	if playerPos.Y >= maxY+1 {
+	if playerPos.Y >= pc.maxY+1 {
 		playerPos.Y = 1
 	}
-	if playerPos.X >= maxX+1 {
+	if playerPos.X >= pc.maxX+1 {
 		playerPos.X = 1
 	}
 
 	if playerPos.Y <= 0 {
-		playerPos.Y = maxY
+		playerPos.Y = pc.maxY
 	}
 	if playerPos.X <= 0 {
-		playerPos.X = maxX
+		playerPos.X = pc.maxX
 	}
 	who := ""
 	isFreePosition := worldModel.GetWhoAreIn(playerPos.X, playerPos.Y, &who)

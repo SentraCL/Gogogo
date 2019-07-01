@@ -12,7 +12,7 @@ type PlayerModel struct {
 }
 
 // InitLogin , etc etc
-func (pm PlayerModel) InitLogin(user string, cookieHash string, positionFree *structs.Object) bool {
+func (pm *PlayerModel) InitLogin(user string, cookieHash string, positionFree *structs.Object) bool {
 	//Obtengo DAO de MongoDB
 	isValid := true
 	//Obtener Conexion.

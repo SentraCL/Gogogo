@@ -14,7 +14,7 @@ type WorldController struct {
 }
 
 //CreateEnemy : Crea un Enemigo
-func (sc WorldController) CreateEnemy() *structs.Object {
+func (sc *WorldController) CreateEnemy() *structs.Object {
 	enemy := structs.Object{}
 
 	nBot := strconv.Itoa(rand.Intn(1000))
@@ -40,31 +40,31 @@ func (sc WorldController) CreateEnemy() *structs.Object {
 }
 
 //GetEnemies : Traeme los Enemigos!!
-func (sc WorldController) GetEnemies() *[]structs.Object {
-	enemies := worldModel.GetObjectByType(structs.EnemyType)
+func (sc *WorldController) GetEnemies() *[]structs.Object {
+	enemies := worldModel.GetObjectsByType(structs.EnemyType)
 	return enemies
 }
 
 //GetPlayers : Traeme los Jugadores.
-func (sc WorldController) GetPlayers() *[]structs.Object {
-	players := worldModel.GetObjectByType(structs.PlayerType)
+func (sc *WorldController) GetPlayers() *[]structs.Object {
+	players := worldModel.GetObjectsByType(structs.PlayerType)
 	return players
 }
 
 //GetPlayerPosition : Posicion del Jugador
-func (sc WorldController) GetPlayerPosition(player string) *structs.Object {
+func (sc *WorldController) GetPlayerPosition(player string) *structs.Object {
 	playerPosition := worldModel.GetPlayer(player)
 	return playerPosition
 }
 
 //GetWorld : Posicion del Jugador
-func (sc WorldController) GetWorld() *structs.World {
+func (sc *WorldController) GetWorld() *structs.World {
 	world := worldModel.Get()
 	return world
 }
 
 //GetFreePosition :Retorna una posicion sin uso en el mundo
-func (sc WorldController) GetFreePosition(player string) *structs.Object {
+func (sc *WorldController) GetFreePosition(player string) *structs.Object {
 	freePosition := structs.Object{}
 	freePosition.Who = player
 
@@ -93,7 +93,7 @@ func (sc WorldController) GetFreePosition(player string) *structs.Object {
 }
 
 //Quit :Retorna una posicion sin uso en el mundo
-func (sc WorldController) Quit(player string) bool {
+func (sc *WorldController) Quit(player string) bool {
 
 	isOut := worldModel.RemoveInTheWorld(player)
 	if !isOut {
@@ -104,7 +104,7 @@ func (sc WorldController) Quit(player string) bool {
 }
 
 //MoveObject :Quita un objecto de su ubicacion anterior y lo coloca en la seteada por parametros
-func (sc WorldController) MoveObject(object *structs.Object) bool {
+func (sc *WorldController) MoveObject(object *structs.Object) bool {
 	Who := ""
 	isOut := worldModel.GetWhoAreIn(object.X, object.Y, &Who)
 	if isOut {

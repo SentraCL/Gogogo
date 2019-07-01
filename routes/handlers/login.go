@@ -18,8 +18,7 @@ var cookieHandler = securecookie.New(
 var sesionCtrl = controllers.SessionController{}
 
 var (
-	// key must be 16, 24 or 32 bytes long (AES-128, AES-192 or AES-256)
-	key   = []byte("super-secret-key")
+	key   = []byte("OM-AH-HUM-VAJRA-GURU-PADMA-SIDDHI-HUM")
 	store = sessions.NewCookieStore(key)
 )
 

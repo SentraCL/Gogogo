@@ -5,17 +5,15 @@ import (
 	"time"
 
 	strutcs "../models/structs"
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 // SessionModel etc etc
 type SessionModel struct {
-	session mgo.Session
 }
 
-//IsUserValid , etc etc
-func (sm SessionModel) IsUserValid(user, pass string) bool {
+//IsUserValid , valida crenciales
+func (sm *SessionModel) IsUserValid(user, pass string) bool {
 	//Obtener Conexion.
 	session, err := GetSession()
 	//Se ejecuta una vez salido de la funcion
@@ -37,7 +35,7 @@ func (sm SessionModel) IsUserValid(user, pass string) bool {
 }
 
 //CreateUser crea usuarios si no estan registrados
-func (sm SessionModel) CreateUser(user, email, pass string) bool {
+func (sm *SessionModel) CreateUser(user, email, pass string) bool {
 	isCreated := false
 	//Obtener Conexion.
 	session, err := GetSession()

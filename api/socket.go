@@ -29,7 +29,6 @@ func (sg SocketGame) GetServer() *socketio.Server {
 	})
 
 	server.OnEvent("/", "move", func(s socketio.Conn, playerJsonString string) string {
-		//log.Println("connected:", s.ID())
 		player := structs.PlayerOnline{}
 		json.Unmarshal([]byte(playerJsonString), &player)
 		playerCtrl := controllers.PlayerController{}
@@ -46,14 +45,10 @@ func (sg SocketGame) GetServer() *socketio.Server {
 		world := worlController.GetWorld()
 		worldString := helpers.StringifyJSON(world)
 		//Contexto comun de socket para poder renderizar en el front-end
-
 		s.SetContext("")
 		if localWorld != worldString {
-			//log.Println("connected:", s.ID())
-			//log.Println("UpdateWorld:", localWorld)
 			s.Emit("renderWorld", worldString)
 		}
-
 	})
 
 	server.OnEvent("/", "bye", func(s socketio.Conn) string {
